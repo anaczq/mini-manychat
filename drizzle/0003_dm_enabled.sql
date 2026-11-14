@@ -1,0 +1,1 @@
+ALTER TABLE "keywords" ADD COLUMN "dm_enabled" boolean DEFAULT true NOT NULL;

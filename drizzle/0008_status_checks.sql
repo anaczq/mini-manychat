@@ -1,0 +1,4 @@
+ALTER TABLE "comment_events" ADD CONSTRAINT "comment_events_status" CHECK ("comment_events"."status" in ('queued','processing','retry','done','partial','failed','no_match','duplicate','expired','skipped_paused','paused_quota','rate_limited_user','ignored_self','ignored_live','ignored_test'));--> statement-breakpoint
+ALTER TABLE "comment_events" ADD CONSTRAINT "comment_events_dm_status" CHECK ("comment_events"."dm_status" in ('pending','sent','skipped','failed','failed_consumed','unknown'));--> statement-breakpoint
+ALTER TABLE "comment_events" ADD CONSTRAINT "comment_events_reply_status" CHECK ("comment_events"."reply_status" in ('pending','sent','skipped','failed'));--> statement-breakpoint
+ALTER TABLE "comment_events" ADD CONSTRAINT "comment_events_material_status" CHECK ("comment_events"."material_status" in ('awaiting_reply','sending','sent','failed'));

@@ -1,0 +1,1 @@
+ALTER TABLE "comment_events" ADD COLUMN "commenter_picture" text;

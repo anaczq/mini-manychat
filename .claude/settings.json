@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -v)",
+      "Bash(corepack enable pnpm)",
+      "Bash(pnpm install)",
+      "Bash(pnpm configurar *)",
+      "Bash(pnpm dev)",
+      "Bash(pnpm env:pull)",
+      "Bash(pnpm tunel)",
+      "Bash(pnpm zernio:webhook *)",
+      "Bash(pnpm db:check)",
+      "Bash(pnpm test)",
+      "Bash(pnpm test:rls)",
+      "Bash(pnpm typecheck)",
+      "Bash(pnpm lint)",
+      "Bash(pnpm exec vercel login)",
+      "Bash(pnpm exec vercel link *)",
+      "Bash(pnpm exec vercel env ls)",
+      "Bash(pnpm exec vercel whoami)"
+    ],
+    "deny": [
+      "Read(./.env.local)",
+      "Read(./.env)"
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+# dependências
+node_modules/
+.pnpm-store/
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# build
+build/
+dist/
+*.tsbuildinfo
+
+# variáveis de ambiente (nunca commitar segredos)
+.env
+.env*.local
+.env*.example
+.env.development
+.env.production
+!.env.example
+
+# Vercel
+.vercel/
+
+# testes
+coverage/
+playwright-report/
+test-results/
+
+# logs
+npm-debug.log*
+pnpm-debug.log*
+*.log
+
+# túnel local
+.ngrok/
+.cloudflared/
+
+# sistema / editor
+.DS_Store
+*.pem
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.vercel
+
+# Claude (preferências locais de cada pessoa)
+.claude/settings.local.json

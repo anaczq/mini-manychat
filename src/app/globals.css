@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+/* Tokens do Figma ("MCP · Tokens") */
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --color-primary: #006be2;
+  --color-primary-hover: #0059bd;
+  --color-primary-soft: #e6f0fc;
+
+  --color-rail: #17181a;
+  --color-rail-item: #2c2e33;
+  --color-rail-icon: #9ea3ad;
+
+  --color-bg: #f5f5f5;
+  --color-surface: #ffffff;
+  --color-border: #d6d6d6;
+  --color-line: #eceef2;
+  --color-subtle: #efefef;
+  --color-skeleton: #efefef;
+  --color-canvas: #efefef;
+  --color-dark: #292929;
+  --color-promo: #151515;
+  --color-link-on-dark: #c2dbff;
+
+  --color-ink: #292929;
+  --color-muted: #707070;
+  --color-tertiary: #878787;
+
+  --color-success: #0c8143;
+  --color-success-soft: #e7f3ec;
+  --color-warning: #a35f00;
+  --color-warning-soft: #fff2e0;
+  --color-error: #d52b0d;
+  --color-error-soft: #fcebe7;
+
+  --color-accent-blue: #1f7bf2;
+  --color-accent-blue-soft: #eaf2fe;
+  --color-accent-green: #17a86b;
+  --color-accent-green-soft: #e6f7ef;
+  --color-accent-orange: #f28a1d;
+  --color-accent-orange-soft: #fef2e4;
+
+  --color-chip-popular: #bb4f00;
+  --color-chip-beta: #006d36;
+}
+
+html,
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* iOS dá zoom ao focar campo com fonte < 16px e a tela fica "presa" ampliada. */
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}

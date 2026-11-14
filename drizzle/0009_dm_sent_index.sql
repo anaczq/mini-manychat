@@ -1,0 +1,1 @@
+CREATE INDEX "comment_events_dm_sent_at" ON "comment_events" USING btree ("dm_sent_at") WHERE "comment_events"."dm_status" = 'sent';

@@ -1,0 +1,7 @@
+ignoredBuiltDependencies:
+  - sharp
+  - unrs-resolver
+
+overrides:
+  "zod@<4.6.6": ">=4.6.6"
+  "esbuild@<0.25.0": ">=0.25.0"

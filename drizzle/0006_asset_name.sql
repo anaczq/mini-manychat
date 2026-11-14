@@ -1,0 +1,1 @@
+ALTER TABLE "assets" ADD COLUMN "name" text DEFAULT 'arquivo' NOT NULL;

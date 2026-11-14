@@ -1,0 +1,13 @@
+import { config } from "dotenv";
+import { defineConfig } from "drizzle-kit";
+
+config({ path: ".env.local" });
+
+// Migrations rodam com o papel dono (DATABASE_URL_UNPOOLED); nunca usado em runtime.
+export default defineConfig({
+  schema: "./src/db/schema.ts",
+  out: "./drizzle",
+  dialect: "postgresql",
+  casing: "snake_case",
+  dbCredentials: { url: process.env.DATABASE_URL_UNPOOLED! },
+});
