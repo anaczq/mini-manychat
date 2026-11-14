@@ -63,7 +63,7 @@ Todas as URLs dos papéis precisam de `sslmode=require&channel_binding=require`;
 ### Testar o webhook no computador (túnel)
 
 ```bash
-brew install cloudflared                              # uma vez (ou baixe no site da Cloudflare)
+brew install cloudflared                              # Mac, uma vez (Windows: winget install --id Cloudflare.cloudflared)
 pnpm tunel                                            # copie a URL https://…trycloudflare.com
 pnpm zernio:webhook https://…trycloudflare.com --local   # cadastra o webhook, grava PUBLIC_URL e envia um teste
 ```

@@ -1,23 +1,26 @@
 import { execFileSync } from "node:child_process";
 import { ENV_FILE, readLocalEnv, upsertLocalEnv } from "./env-file.mts";
 
+// No Windows, pnpm e vercel são arquivos .cmd: só rodam via shell.
+export const shell = process.platform === "win32";
+
 // Preview fica de fora: o CLI exige escolher branch de forma interativa nesse ambiente.
 export const ENVIRONMENTS = ["production", "development"] as const;
 
 /** Grava (substituindo) uma variável na Vercel sem imprimir o valor. */
 export function vercelEnvSet(name: string, value: string, environment: (typeof ENVIRONMENTS)[number]) {
   try {
-    execFileSync("vercel", ["env", "rm", name, environment, "--yes"], { stdio: "ignore" });
+    execFileSync("vercel", ["env", "rm", name, environment, "--yes"], { stdio: "ignore", shell });
   } catch {
     // ainda não existia
   }
   const args = ["env", "add", name, environment];
   if (environment !== "development") args.push("--sensitive");
-  execFileSync("vercel", args, { input: value, stdio: ["pipe", "ignore", "inherit"] });
+  execFileSync("vercel", args, { input: value, stdio: ["pipe", "ignore", "inherit"], shell });
 }
 
 export function vercelEnvNames(): Set<string> {
-  const out = execFileSync("vercel", ["env", "ls"], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
+  const out = execFileSync("vercel", ["env", "ls"], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"], shell });
   return new Set(out.split("\n").map((l) => l.trim().split(/\s+/)[0]).filter((n) => /^[A-Z_]+$/.test(n)));
 }
 
@@ -27,6 +30,6 @@ const LOCAL_ONLY = ["PUBLIC_URL"] as const;
 /** Traz as variáveis de development da Vercel para o .env.local, mantendo as que só existem localmente. */
 export function pullEnv() {
   const keep = readLocalEnv();
-  execFileSync("vercel", ["env", "pull", ENV_FILE, "--yes"], { stdio: ["ignore", "ignore", "inherit"] });
+  execFileSync("vercel", ["env", "pull", ENV_FILE, "--yes"], { stdio: ["ignore", "ignore", "inherit"], shell });
   for (const name of LOCAL_ONLY) if (keep[name]) upsertLocalEnv(name, keep[name]);
 }

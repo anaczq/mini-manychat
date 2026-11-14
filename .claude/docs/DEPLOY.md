@@ -11,7 +11,7 @@ Com o app publicado, ele responde comentários 24 h por dia, sem depender do seu
 ## 1. Subir o código para o seu GitHub
 
 1. Crie uma conta grátis em https://github.com/signup.
-2. Instale o GitHub CLI (Mac: `brew install gh`; Windows: https://cli.github.com) e entre:
+2. Instale o GitHub CLI (Mac: `brew install gh`; Windows: `winget install --id GitHub.cli`, depois reabra o terminal) e entre:
    ```bash
    gh auth login --web
    ```

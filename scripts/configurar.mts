@@ -12,7 +12,7 @@ import { hashPassword } from "better-auth/crypto";
 import ws from "ws";
 import { readLocalEnv, upsertLocalEnv } from "./lib/env-file.mts";
 import { readHidden } from "./lib/read-hidden.mts";
-import { ENVIRONMENTS, pullEnv, vercelEnvNames, vercelEnvSet } from "./lib/vercel-env.mts";
+import { ENVIRONMENTS, pullEnv, shell, vercelEnvNames, vercelEnvSet } from "./lib/vercel-env.mts";
 import { zernioAccount } from "./lib/zernio-account.mts";
 
 neonConfig.webSocketConstructor = ws;
@@ -38,7 +38,7 @@ async function ask(question: string): Promise<string> {
 }
 
 function run(script: string) {
-  execFileSync("pnpm", ["-s", script], { stdio: "inherit" });
+  execFileSync("pnpm", ["-s", script], { stdio: "inherit", shell });
 }
 
 // 1. Projeto na Vercel com banco e Redis

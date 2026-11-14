@@ -35,7 +35,9 @@ Antes de começar, diga à pessoa quantas etapas faltam e quanto tempo levam (do
 
 ## Etapa 1 — Node.js
 
-Se `node -v` falhar ou for menor que 24: peça para baixar a versão **LTS** em https://nodejs.org, instalar como qualquer programa e reabrir o app do Claude. Depois `corepack enable pnpm` e `pnpm install`.
+Se `node -v` falhar ou for menor que 24: peça para baixar a versão **LTS** em https://nodejs.org (Mac: `.pkg`; Windows: `.msi`), instalar como qualquer programa e reabrir o app do Claude. Depois `corepack enable pnpm` e `pnpm install`. No Windows, se `corepack` der erro de permissão, use `npm i -g pnpm`.
+
+Descubra o sistema da pessoa (Mac ou Windows) logo no início e use os comandos certos para ele nas etapas seguintes.
 
 ## Etapa 2 — Vercel (conta e projeto)
 
@@ -83,7 +85,7 @@ No fim ele mostra uma **senha provisória**: entregue à pessoa e diga para troc
 
 O Instagram precisa de um endereço público. No computador isso é feito com um túnel, que só funciona **enquanto o computador e o `pnpm dev` estiverem ligados**. Para funcionar 24 h, siga o `DEPLOY.md`.
 
-1. Instalar o `cloudflared` (Mac: `brew install cloudflared`; sem Homebrew ou no Windows: https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/).
+1. Instalar o `cloudflared` (Mac: `brew install cloudflared`; Windows: `winget install --id Cloudflare.cloudflared`; sem nenhum dos dois: https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/). No Windows, reabra o app do Claude depois de instalar.
 2. Rode `pnpm tunel` em segundo plano e pegue a URL `https://….trycloudflare.com` da saída.
 3. `pnpm zernio:webhook <url> --local` e reinicie o `pnpm dev`.
 4. Criar uma automação no painel e comentar a palavra-chave **de outra conta** (comentários da própria conta são ignorados de propósito).
