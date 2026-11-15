@@ -1,14 +1,15 @@
 "use client";
 
-import { Copy, Download, LogOut, Send } from "lucide-react";
+import { Copy, Download } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useOptimistic, useState, useTransition } from "react";
 import { Field } from "@/components/auth-card";
 import { Modal } from "@/components/modal";
 import { NewPasswordFields, PasswordField } from "@/components/password-field";
-import { Button, Toggle } from "@/components/ui";
+import { Badge, Button, Toggle } from "@/components/ui";
 import { saveLimitsAction, setAutomationEnabledAction, setButtonsAllowedAction, wipeHistoryAction } from "@/app/actions/configuracoes";
 import { authClient } from "@/lib/auth-client";
+import { dangerOutline, Line, MonoValue, SettingsCard } from "./ui";
 
 export function KillSwitch({ enabled }: { enabled: boolean }) {
   const [on, setOn] = useOptimistic(enabled);
@@ -71,7 +72,6 @@ export function CopyButton({ text, label = "Copiar" }: { text: string; label?: s
   return (
     <Button
       variant="secondary"
-      icon={<Copy className="size-4" />}
       onClick={() => {
         navigator.clipboard.writeText(text);
         setDone(true);
@@ -87,10 +87,9 @@ export function TestWebhookButton() {
   const [msg, setMsg] = useState<string | null>(null);
   const [pending, start] = useTransition();
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col items-end gap-1">
       <Button
         variant="secondary"
-        icon={<Send className="size-4" />}
         disabled={pending}
         onClick={() =>
           start(async () => {
@@ -101,15 +100,26 @@ export function TestWebhookButton() {
       >
         Enviar evento de teste
       </Button>
-      {msg && <span className="text-xs text-muted">{msg}</span>}
+      {msg && (
+        <span role="status" className="max-w-[220px] text-xs text-muted">
+          {msg}
+        </span>
+      )}
     </div>
   );
 }
 
+const LIMITS = [
+  ["perUserDailyCap", "DMs por pessoa em 24 h", "Evita que alguém colecione materiais comentando em vários posts.", 1, 20],
+  ["outboundHourlyBudget", "Private Replies por hora", "Limite da Meta: 750/h. O padrão (600) deixa 20% de folga.", 10, 700],
+  ["monthlyDmBudget", "Cota de DMs no mês", "A Zernio grátis envia até 10.000 DMs/mês. Ao atingir, o envio pausa até o mês virar.", 100, 1000000],
+] as const;
+
 export function LimitsForm({ values }: { values: { perUserDailyCap: number; outboundHourlyBudget: number; monthlyDmBudget: number } }) {
   const [msg, setMsg] = useState<string | null>(null);
   const [pending, start] = useTransition();
-  const input = "h-9 w-24 rounded-md border border-border px-3 text-sm font-semibold outline-none focus:border-primary";
+  const input =
+    "h-[38px] w-24 rounded-xl border border-border bg-surface px-3 text-sm font-medium outline-none focus:border-primary md:w-[120px]";
   return (
     <form
       action={(f) =>
@@ -120,33 +130,29 @@ export function LimitsForm({ values }: { values: { perUserDailyCap: number; outb
       }
       className="flex flex-col"
     >
-      <div className="flex flex-col">
-        {(
-          [
-            ["perUserDailyCap", "DMs por pessoa em 24 h", "Evita que alguém colecione materiais comentando em vários posts.", 1, 20],
-            ["outboundHourlyBudget", "Private Replies por hora", "Limite da Meta: 750/h. O padrão (600) deixa 20% de folga.", 10, 700],
-            ["monthlyDmBudget", "Cota de DMs no mês", "A Zernio grátis envia até 10.000 DMs/mês. Ao atingir, o envio pausa até o mês virar.", 100, 1000000],
-          ] as const
-        ).map(([name, label, help, min, max]) => (
-          <div key={name} className="flex flex-col gap-2 border-t border-border px-5 py-4 first:border-t-0 md:flex-row md:items-center md:gap-6 md:px-6">
-            <label htmlFor={name} className="text-[15px] font-medium md:w-[220px] md:text-base">
-              {label}
-            </label>
-            <input id={name} name={name} type="number" min={min} max={max} defaultValue={values[name]} className={input} />
-            <p className="flex-1 text-[13px] text-muted">{help}</p>
-          </div>
-        ))}
-        <div className="flex flex-col gap-1 border-t border-border px-5 py-4 md:flex-row md:items-center md:gap-6 md:px-6">
-          <p className="text-[15px] font-medium md:w-[220px] md:text-base">Comentários por pessoa em 10 min</p>
-          <span className="w-24 text-sm font-semibold">10</span>
-          <p className="flex-1 text-[13px] text-muted">Fixo. Acima disso, os comentários são ignorados sem gastar chamadas.</p>
-        </div>
-      </div>
-      <div className="flex flex-wrap items-center gap-3 border-t border-border px-5 py-4 md:px-6">
+      {LIMITS.map(([name, label, help, min, max]) => (
+        <Line
+          key={name}
+          label={label}
+          labelFor={name}
+          help={help}
+          action={<input id={name} name={name} type="number" min={min} max={max} defaultValue={values[name]} className={input} />}
+        />
+      ))}
+      <Line
+        label="Comentários por pessoa em 10 min"
+        help="Fixo. Acima disso, os comentários são ignorados sem gastar chamadas."
+        action={<MonoValue>10 · fixo</MonoValue>}
+      />
+      <div className="flex flex-wrap items-center gap-3 pt-3.5">
         <Button type="submit" disabled={pending}>
           Salvar limites
         </Button>
-        {msg && <span className="text-sm text-muted">{msg}</span>}
+        {msg && (
+          <span role="status" className="text-sm text-muted">
+            {msg}
+          </span>
+        )}
       </div>
     </form>
   );
@@ -267,16 +273,31 @@ export function ChangePassword() {
   );
 }
 
-type SessionRow = { id: string; token: string; userAgent?: string | null; createdAt: Date | string; current: boolean };
+type SessionRow = {
+  id: string;
+  token: string;
+  userAgent?: string | null;
+  createdAt: Date | string;
+  updatedAt?: Date | string | null;
+  current: boolean;
+};
 
-export function Sessions() {
+const dayMonth = (d: Date | string) => new Date(d).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", timeZone: "America/Sao_Paulo" });
+const fullDate = (d: Date | string) => new Date(d).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" });
+
+/** Card "Onde você está logada" (Figma 09b): uma linha por sessão e o botão para encerrar as outras. */
+export function SessionsCard() {
   const [list, setList] = useState<SessionRow[] | null>(null);
   const [confirm, setConfirm] = useState(false);
   const [pending, start] = useTransition();
 
   useEffect(() => {
     Promise.all([authClient.listSessions(), authClient.getSession()]).then(([all, cur]) =>
-      setList((all.data ?? []).map((s) => ({ ...s, current: s.token === cur.data?.session.token }))),
+      setList(
+        (all.data ?? [])
+          .map((s) => ({ ...s, current: s.token === cur.data?.session.token }))
+          .sort((a, b) => Number(b.current) - Number(a.current)),
+      ),
     );
   }, []);
 
@@ -288,20 +309,28 @@ export function Sessions() {
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <SettingsCard
+      eyebrow={list ? `Sessões · ${list.length} ${list.length === 1 ? "ativa" : "ativas"}` : "Sessões"}
+      title="Onde você está logada"
+    >
       {list === null ? (
-        <span className="text-[13px] text-muted">Carregando…</span>
+        <p className="border-t border-hairline py-3.5 text-[13px] text-muted">Carregando…</p>
       ) : (
         list.map((s) => (
-          <span key={s.id} className="text-[13px] text-muted">
-            {describe(s.userAgent)} {s.current ? "· este navegador" : `· desde ${new Date(s.createdAt).toLocaleDateString("pt-BR")}`}
-          </span>
+          <Line
+            key={s.id}
+            label={describe(s.userAgent)}
+            help={s.current ? "este navegador" : `desde ${fullDate(s.createdAt)}`}
+            action={s.current ? <Badge status="info">Agora</Badge> : <MonoValue>{dayMonth(s.updatedAt ?? s.createdAt)}</MonoValue>}
+          />
         ))
       )}
       {list && list.length > 1 && (
-        <Button variant="secondary" onClick={() => setConfirm(true)} className="self-start">
-          Encerrar outras
-        </Button>
+        <div className="pt-3.5">
+          <Button variant="secondary" onClick={() => setConfirm(true)}>
+            Encerrar outras
+          </Button>
+        </div>
       )}
       {confirm && (
         <Modal
@@ -331,23 +360,42 @@ export function Sessions() {
           <p className="text-sm text-muted">Os outros aparelhos vão precisar entrar de novo com senha e código 2FA. Este navegador continua conectado.</p>
         </Modal>
       )}
-    </div>
+    </SettingsCard>
   );
 }
 
 export function SignOutButton() {
   const router = useRouter();
   return (
-    <Button
-      variant="danger"
-      icon={<LogOut className="size-4" />}
+    <button
+      type="button"
+      className={dangerOutline}
       onClick={async () => {
         await authClient.signOut();
         router.replace("/login");
       }}
     >
       Sair do painel
-    </Button>
+    </button>
+  );
+}
+
+/** Lista do audit_log já carregada no servidor; mostra aos poucos para não virar uma parede. */
+export function AuditList({ rows }: { rows: { id: string; label: string; date: string; time: string }[] }) {
+  const [shown, setShown] = useState(10);
+  return (
+    <>
+      {rows.slice(0, shown).map((r) => (
+        <Line key={r.id} label={r.label} help={r.date} action={<MonoValue>{r.time}</MonoValue>} />
+      ))}
+      {shown < rows.length && (
+        <div className="pt-3.5">
+          <Button variant="secondary" onClick={() => setShown((n) => n + 20)}>
+            Carregar mais
+          </Button>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -357,9 +405,9 @@ export function WipeHistory() {
   const [pending, start] = useTransition();
   return (
     <>
-      <Button variant="danger" onClick={() => setOpen(true)}>
+      <button type="button" className={dangerOutline} onClick={() => setOpen(true)}>
         Apagar
-      </Button>
+      </button>
       {open && (
         <Modal title="Apagar todo o histórico?" onClose={() => setOpen(false)}>
           <p className="text-sm text-muted">Remove todos os comentários, status e cliques registrados. As automações continuam. Não dá para desfazer.</p>

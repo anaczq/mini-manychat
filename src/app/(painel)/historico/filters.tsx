@@ -1,29 +1,51 @@
 "use client";
 
+import clsx from "clsx";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Icone } from "@/components/icone";
+import { int } from "@/lib/format";
 
-const select = "h-9 rounded-md border border-border bg-surface px-3 text-[13px] font-medium outline-none focus:border-primary";
+type Counts = { all: number; enviado: number; lido: number; fila: number; erro: number; ignorado: number };
 
 const STATUS = [
-  ["", "Status: todos"],
-  ["enviado", "Enviado"],
-  ["lido", "Lido"],
-  ["fila", "Na fila"],
-  ["erro", "Erro"],
-  ["ignorado", "Ignorado"],
+  ["enviado", "Enviado", "bg-success"],
+  ["lido", "Lido", "bg-primary"],
+  ["fila", "Na fila", "bg-warning"],
+  ["erro", "Erro", "bg-error"],
+  ["ignorado", "Ignorado", "bg-tertiary"],
 ] as const;
 
 const PERIODS = [
   ["hoje", "Hoje"],
-  ["", "Últimos 7 dias"],
-  ["30d", "Últimos 30 dias"],
-  ["90d", "Últimos 90 dias"],
+  ["", "7 dias"],
+  ["30d", "30 dias"],
+  ["90d", "90 dias"],
 ] as const;
 
-export function HistoryFiltersBar({ keywords, total }: { keywords: { id: string; name: string }[]; total: number }) {
+function Chip({ active, onClick, dot, label, count }: { active: boolean; onClick: () => void; dot?: string; label: string; count?: number }) {
+  return (
+    <button
+      type="button"
+      aria-pressed={active}
+      onClick={onClick}
+      className={clsx(
+        "inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full px-3 text-[13px] font-medium whitespace-nowrap transition-colors",
+        active ? "bg-dark text-white" : "border border-border bg-surface text-secondary hover:bg-bg",
+      )}
+    >
+      {dot && <span className={clsx("size-[7px] rounded-full", dot)} />}
+      {label}
+      {count !== undefined && <span className={clsx("font-mono text-[11px]", active ? "text-white/80" : "text-muted")}>{int(count)}</span>}
+    </button>
+  );
+}
+
+export function HistoryFiltersBar({ keywords, counts, csvHref }: { keywords: { id: string; name: string }[]; counts: Counts; csvHref: string }) {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
+  const status = params.get("status") ?? "";
+  const periodo = params.get("periodo") ?? "";
 
   function set(key: string, value: string) {
     const next = new URLSearchParams(params);
@@ -35,32 +57,40 @@ export function HistoryFiltersBar({ keywords, total }: { keywords: { id: string;
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <select aria-label="Filtrar por status" className={select} value={params.get("status") ?? ""} onChange={(e) => set("status", e.target.value)}>
-        {STATUS.map(([v, l]) => (
-          <option key={v} value={v}>
-            {l}
-          </option>
+    <div className="flex flex-col gap-3 md:gap-[18px]">
+      <div className="-mx-4 flex items-center gap-2 overflow-x-auto px-4 [scrollbar-width:none] md:mx-0 md:flex-wrap md:overflow-visible md:px-0" role="group" aria-label="Filtrar por status do DM">
+        <span className="eyebrow hidden md:inline">DM</span>
+        <Chip active={!status} onClick={() => set("status", "")} label="Todos" count={counts.all} />
+        {STATUS.map(([v, l, dot]) => (
+          <Chip key={v} active={status === v} onClick={() => set("status", v)} dot={dot} label={l} count={counts[v]} />
         ))}
-      </select>
-      <select aria-label="Filtrar por automação" className={select} value={params.get("palavra") ?? ""} onChange={(e) => set("palavra", e.target.value)}>
-        <option value="">Palavra: todas</option>
-        {keywords.map((k) => (
-          <option key={k.id} value={k.id}>
-            {k.name}
-          </option>
-        ))}
-      </select>
-      <select aria-label="Período" className={select} value={params.get("periodo") ?? ""} onChange={(e) => set("periodo", e.target.value)}>
+        <span aria-hidden className="mx-1 h-5 w-px shrink-0 bg-border" />
+        <span className="eyebrow shrink-0">Período</span>
         {PERIODS.map(([v, l]) => (
-          <option key={v} value={v}>
-            {l}
-          </option>
+          <Chip key={v} active={periodo === v} onClick={() => set("periodo", v)} label={l} />
         ))}
-      </select>
-      <span className="ml-auto text-[13px] text-muted">
-        {total} {total === 1 ? "evento" : "eventos"}
-      </span>
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="relative">
+          <select
+            aria-label="Filtrar por automação"
+            className="h-9 max-w-[220px] appearance-none truncate rounded-full border border-border bg-surface pr-8 pl-3.5 text-[13px] font-medium text-secondary outline-none focus:border-primary"
+            value={params.get("palavra") ?? ""}
+            onChange={(e) => set("palavra", e.target.value)}
+          >
+            <option value="">Automação: todas</option>
+            {keywords.map((k) => (
+              <option key={k.id} value={k.id}>
+                {k.name}
+              </option>
+            ))}
+          </select>
+          <Icone nome="chevron-baixo" className="pointer-events-none absolute top-1/2 right-3 size-3.5 -translate-y-1/2 text-secondary" />
+        </div>
+        <a href={csvHref} className="ml-auto text-[13px] text-secondary hover:text-ink">
+          Exportar CSV
+        </a>
+      </div>
     </div>
   );
 }

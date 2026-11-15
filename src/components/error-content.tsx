@@ -1,6 +1,5 @@
 "use client";
 
-import { AlertTriangle } from "lucide-react";
 import { useEffect } from "react";
 import { EmptyState } from "@/components/empty-state";
 import { Button } from "@/components/ui";
@@ -15,12 +14,14 @@ export function ErrorContent({ error, retry }: { error: unknown; retry: () => vo
 
   return (
     <EmptyState
-      icon={<AlertTriangle />}
+      eyebrow="Erro"
       title="Algo deu errado"
       action={
         <div className="flex flex-col items-center gap-3">
-          <Button onClick={() => retry()}>Tentar de novo</Button>
-          {digest && <span className="text-xs text-muted">Código: {digest}</span>}
+          <Button onClick={() => retry()} className="px-3.5 text-sm! font-semibold">
+            Tentar de novo
+          </Button>
+          {digest && <span className="font-mono text-[11px] text-muted">Código: {digest}</span>}
         </div>
       }
     >

@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Funnel_Display, Funnel_Sans, Space_Mono } from "next/font/google";
 import { connection } from "next/server";
 import "./globals.css";
 
-const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
+const funnelSans = Funnel_Sans({ variable: "--font-funnel-sans", subsets: ["latin"] });
+const funnelDisplay = Funnel_Display({ variable: "--font-funnel-display", subsets: ["latin"], weight: ["500"] });
+const spaceMono = Space_Mono({ variable: "--font-space-mono", subsets: ["latin"], weight: ["400"] });
 
 export const metadata: Metadata = {
-  title: "Mini Manychat",
+  title: "Nooi Reply",
   description: "Automação de respostas a comentários do Instagram",
   robots: { index: false, follow: false },
 };
@@ -16,7 +18,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   // saem sem nonce e o navegador bloqueia tudo.
   await connection();
   return (
-    <html lang="pt-BR" className={`${inter.variable} h-full`}>
+    <html lang="pt-BR" className={`${funnelSans.variable} ${funnelDisplay.variable} ${spaceMono.variable} h-full`}>
       <body className="min-h-full">{children}</body>
     </html>
   );

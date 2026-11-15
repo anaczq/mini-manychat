@@ -1,31 +1,36 @@
 @import "tailwindcss";
 
-/* Tokens do Figma ("MCP · Tokens") */
+/* Tokens do Figma ("Nooi Reply · UI", The Outsider Hub) */
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-funnel-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-funnel-display), var(--font-funnel-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-space-mono), ui-monospace, monospace;
 
-  --color-primary: #006be2;
-  --color-primary-hover: #0059bd;
-  --color-primary-soft: #e6f0fc;
+  --color-primary: #2127d0;
+  --color-primary-hover: #1a1fb0;
+  --color-primary-soft: #eef0ff;
 
-  --color-rail: #17181a;
-  --color-rail-item: #2c2e33;
-  --color-rail-icon: #9ea3ad;
+  --color-rail: #f8f9fa;
+  --color-rail-item: #ffffff;
+  --color-rail-icon: #6b6f78;
 
-  --color-bg: #f5f5f5;
+  --color-bg: #f8f9fa;
   --color-surface: #ffffff;
-  --color-border: #d6d6d6;
-  --color-line: #eceef2;
-  --color-subtle: #efefef;
-  --color-skeleton: #efefef;
-  --color-canvas: #efefef;
-  --color-dark: #292929;
-  --color-promo: #151515;
-  --color-link-on-dark: #c2dbff;
+  --color-border: #e3e5ea;
+  --color-border-strong: #d9dce1;
+  --color-hairline: rgb(16 17 20 / 0.06);
+  --color-line: #e3e5ea;
+  --color-subtle: #f2f3f4;
+  --color-skeleton: #f2f3f4;
+  --color-canvas: #f2f3f4;
+  --color-dark: #101114;
+  --color-promo: #101114;
+  --color-link-on-dark: #c7caff;
 
-  --color-ink: #292929;
-  --color-muted: #707070;
-  --color-tertiary: #878787;
+  --color-ink: #101114;
+  --color-secondary: #4a4d54;
+  --color-muted: #6b6f78;
+  --color-tertiary: #787c84;
 
   --color-success: #0c8143;
   --color-success-soft: #e7f3ec;
@@ -34,8 +39,8 @@
   --color-error: #d52b0d;
   --color-error-soft: #fcebe7;
 
-  --color-accent-blue: #1f7bf2;
-  --color-accent-blue-soft: #eaf2fe;
+  --color-accent-blue: #2127d0;
+  --color-accent-blue-soft: #eef0ff;
   --color-accent-green: #17a86b;
   --color-accent-green-soft: #e6f7ef;
   --color-accent-orange: #f28a1d;
@@ -54,6 +59,24 @@ body {
 body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+}
+
+/* Rótulo "olho" do Figma (Label/Eyebrow): Space Mono em caixa alta. */
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* Ícones exportados do Figma: o SVG vira máscara e a cor segue o texto (currentColor). */
+@utility icone {
+  display: inline-block;
+  flex-shrink: 0;
+  background-color: currentColor;
+  mask: var(--icone) center / contain no-repeat;
 }
 
 /* iOS dá zoom ao focar campo com fonte < 16px e a tela fica "presa" ampliada. */

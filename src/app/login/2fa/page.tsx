@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { AuthScreen, Field, FormError } from "@/components/auth-card";
+import { AuthScreen, authButton, Field, FormError } from "@/components/auth-card";
 import { Button } from "@/components/ui";
 import { authClient } from "@/lib/auth-client";
 import { authErrorMessage } from "@/lib/auth-errors";
@@ -31,13 +31,13 @@ export default function TwoFactorPage() {
   }
 
   return (
-    <AuthScreen>
-      <h1 className="text-xl font-bold">Verificação em duas etapas</h1>
-      <p className="text-sm text-muted">
-        {backup ? "Digite um dos seus códigos de backup." : "Digite o código de 6 dígitos do seu app autenticador."}
-      </p>
+    <AuthScreen
+      eyebrow="01 · Acesso · 2FA"
+      title="Verificação em duas etapas"
+      subtitle={backup ? "Digite um dos seus códigos de backup." : "Digite o código de 6 dígitos do seu app autenticador."}
+    >
       {error && <FormError>{error}</FormError>}
-      <form action={onSubmit} className="flex flex-col gap-4">
+      <form action={onSubmit} className="flex flex-col gap-6">
         <Field
           key={backup ? "backup" : "totp"}
           label={backup ? "Código de backup" : "Código"}
@@ -45,16 +45,19 @@ export default function TwoFactorPage() {
           inputMode={backup ? "text" : "numeric"}
           autoComplete="one-time-code"
           placeholder={backup ? "XXXX-XXXX" : "000 000"}
+          className="font-mono text-[13px]!"
           required
           autoFocus
         />
-        <Button type="submit" disabled={pending} className="h-10 w-full">
-          {pending ? "Verificando…" : "Verificar"}
-        </Button>
+        <div className="flex flex-col gap-3.5">
+          <Button type="submit" disabled={pending} className={authButton}>
+            {pending ? "Verificando…" : "Verificar"}
+          </Button>
+          <button type="button" onClick={() => setBackup((v) => !v)} className="self-center text-sm font-medium text-primary">
+            {backup ? "Usar o app autenticador" : "Usar código de backup"}
+          </button>
+        </div>
       </form>
-      <button type="button" onClick={() => setBackup((v) => !v)} className="self-start text-sm font-medium text-primary">
-        {backup ? "Usar o app autenticador" : "Usar código de backup"}
-      </button>
     </AuthScreen>
   );
 }

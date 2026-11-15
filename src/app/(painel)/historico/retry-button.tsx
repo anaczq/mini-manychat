@@ -17,7 +17,7 @@ export function RetryButton({ id, enabled, reason }: { id: string; enabled: bool
       <Button variant="secondary" icon={<History className="size-4" />} disabled={!enabled} onClick={() => setOpen(true)} className="self-start">
         Reprocessar
       </Button>
-      {reason && <p className="text-[11px] text-muted">{reason}</p>}
+      {reason && <p className="text-xs text-muted">{reason}</p>}
       {msg && <p className="text-xs font-medium">{msg}</p>}
       {open && (
         <Modal
@@ -44,7 +44,7 @@ export function RetryButton({ id, enabled, reason }: { id: string; enabled: bool
           }
         >
           <p className="text-sm text-muted">O DM e a resposta pública serão tentados de novo. Só funciona até 7 dias depois do comentário.</p>
-          <p className="rounded-lg bg-accent-blue-soft px-3 py-2.5 text-[13px] font-medium">Nunca envia DM duplicado: se o primeiro já tiver chegado, nada acontece.</p>
+          <p className="rounded-2xl bg-primary-soft px-3.5 py-3 text-[13px] font-medium">Nunca envia DM duplicado: se o primeiro já tiver chegado, nada acontece.</p>
         </Modal>
       )}
     </div>

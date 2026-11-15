@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { AuthScreen, Field, FormError } from "@/components/auth-card";
+import { AuthScreen, authButton, Field, FormError } from "@/components/auth-card";
 import { PasswordField } from "@/components/password-field";
 import { Button } from "@/components/ui";
 import { authClient } from "@/lib/auth-client";
@@ -31,19 +31,22 @@ export default function LoginPage() {
   }
 
   return (
-    <AuthScreen>
-      <h1 className="text-xl font-bold">Entrar no painel</h1>
+    <AuthScreen eyebrow="01 · Acesso" title="Entrar no painel" subtitle="Use o e-mail e a senha da sua conta. O código 2FA vem em seguida.">
       {error && <FormError>{error}</FormError>}
-      <form action={onSubmit} className="flex flex-col gap-4">
-        <Field label="E-mail" name="email" type="email" autoComplete="username" required />
-        <PasswordField label="Senha" name="password" autoComplete="current-password" required minLength={8} />
-        <Button type="submit" disabled={pending} className="h-10 w-full">
-          {pending ? "Entrando…" : "Entrar"}
-        </Button>
+      <form action={onSubmit} className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4">
+          <Field label="E-mail" name="email" type="email" autoComplete="username" placeholder="voce@email.com" required />
+          <PasswordField label="Senha" name="password" autoComplete="current-password" placeholder="Sua senha" required minLength={8} />
+        </div>
+        <div className="flex flex-col items-center gap-3.5">
+          <Button type="submit" disabled={pending} className={authButton}>
+            {pending ? "Entrando…" : "Entrar"}
+          </Button>
+          <Link href="/login/esqueci" className="text-sm font-medium text-primary">
+            Esqueci a senha
+          </Link>
+        </div>
       </form>
-      <Link href="/login/esqueci" className="self-center text-sm font-medium text-primary">
-        Esqueci a senha
-      </Link>
     </AuthScreen>
   );
 }

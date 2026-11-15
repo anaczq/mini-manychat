@@ -19,9 +19,9 @@ export type HistoryFilters = { status?: keyof typeof STATUS_FILTERS; palavra?: s
 
 const PAGE_SIZE = 25;
 
-function whereFor(f: HistoryFilters): SQL | undefined {
+function whereFor(f: HistoryFilters, withStatus = true): SQL | undefined {
   const parts: SQL[] = [];
-  if (f.status) parts.push(STATUS_FILTERS[f.status].where);
+  if (withStatus && f.status) parts.push(STATUS_FILTERS[f.status].where);
   if (f.palavra) parts.push(eq(commentEvents.keywordId, f.palavra));
   parts.push(gte(commentEvents.createdAt, new Date(Date.now() - PERIODS[f.periodo ?? "7d"] * 86400_000)));
   return and(...parts);
@@ -31,6 +31,19 @@ export async function listHistory(userId: string, f: HistoryFilters) {
   return asWeb(userId, async (tx) => {
     const where = whereFor(f);
     const [{ total }] = await tx.select({ total: count() }).from(commentEvents).where(where);
+    // Contagens do período (sem o filtro de status) para os números do topo e os chips de status.
+    const [c] = await tx
+      .select({
+        all: sql<number>`count(*)::int`,
+        matched: sql<number>`count(*) filter (where ${commentEvents.keywordId} is not null)::int`,
+        enviado: sql<number>`count(*) filter (where ${STATUS_FILTERS.enviado.where})::int`,
+        lido: sql<number>`count(*) filter (where ${STATUS_FILTERS.lido.where})::int`,
+        fila: sql<number>`count(*) filter (where ${STATUS_FILTERS.fila.where})::int`,
+        erro: sql<number>`count(*) filter (where ${STATUS_FILTERS.erro.where})::int`,
+        ignorado: sql<number>`count(*) filter (where ${STATUS_FILTERS.ignorado.where})::int`,
+      })
+      .from(commentEvents)
+      .where(whereFor(f, false));
     const rows = await tx
       .select({
         id: commentEvents.id,
@@ -38,6 +51,7 @@ export async function listHistory(userId: string, f: HistoryFilters) {
         picture: commentEvents.commenterPicture,
         text: commentEvents.commentText,
         terms: keywords.terms,
+        automation: keywords.name,
         status: commentEvents.status,
         dmStatus: commentEvents.dmStatus,
         dmReadAt: commentEvents.dmReadAt,
@@ -53,6 +67,7 @@ export async function listHistory(userId: string, f: HistoryFilters) {
     const keywordOptions = await tx.select({ id: keywords.id, name: keywords.name }).from(keywords).orderBy(keywords.name);
     return {
       total,
+      counts: c,
       pageSize: PAGE_SIZE,
       keywordOptions,
       rows: rows.map((r) => ({
@@ -61,6 +76,7 @@ export async function listHistory(userId: string, f: HistoryFilters) {
         picture: r.picture,
         text: r.text ?? "",
         keyword: r.terms?.[0] ?? null,
+        automation: r.automation,
         at: r.at,
         dm: describeDm(r),
         reply: describeReply(r.replyStatus),
@@ -125,6 +141,7 @@ export async function getHistoryEvent(userId: string, id: string) {
       text: e.commentText ?? "",
       createdAt: e.createdAt,
       keyword: r.terms?.[0] ?? null,
+      automation: r.keywordName,
       postId: e.platformPostId,
       attempts: e.attempts,
       dm: describeDm(e),

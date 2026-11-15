@@ -48,7 +48,7 @@ export function PostPicker({
       width={880}
       footer={
         <>
-          <span className="flex-1 self-center text-sm font-semibold">
+          <span className="flex-1 self-center text-sm font-medium">
             {picked.length} {picked.length === 1 ? "selecionado" : "selecionados"}
           </span>
           <Button variant="secondary" onClick={onClose}>
@@ -59,15 +59,17 @@ export function PostPicker({
       }
     >
       <div className="flex flex-wrap gap-2">
-        <label className="flex h-9 min-w-[200px] flex-1 items-center gap-2 rounded-md border border-border px-2.5 text-sm">
-          <Search className="size-4 text-muted" />
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar pela legenda" className="flex-1 bg-transparent outline-none" />
+        <label className="flex h-9 min-w-[200px] flex-1 items-center gap-2 rounded-xl border border-border px-2.5 text-sm focus-within:border-primary">
+          <Search className="size-4 shrink-0 text-muted" />
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar pela legenda" aria-label="Buscar pela legenda" className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-ink/50" />
         </label>
         {(["todos", "reels", "posts"] as const).map((f) => (
           <button
             key={f}
+            type="button"
+            aria-pressed={filter === f}
             onClick={() => setFilter(f)}
-            className={clsx("h-9 rounded-md px-3 text-[13px] font-medium capitalize", filter === f ? "bg-border" : "border border-border")}
+            className={clsx("h-9 rounded-full px-3 text-[13px] font-medium capitalize", filter === f ? "bg-border" : "border border-border hover:bg-bg")}
           >
             {f}
           </button>
@@ -82,7 +84,7 @@ export function PostPicker({
             const on = picked.includes(p.id);
             return (
               <li key={p.id}>
-                <button onClick={() => toggle(p.id)} aria-pressed={on} className="flex w-full flex-col gap-1.5 text-left">
+                <button type="button" onClick={() => toggle(p.id)} aria-pressed={on} className="flex w-full flex-col gap-1.5 text-left">
                   <span className={clsx("relative block aspect-[4/5] w-full overflow-hidden rounded-md bg-subtle", on && "ring-[3px] ring-inset ring-primary")}>
                     {p.thumbnailUrl && <img src={p.thumbnailUrl} alt="" className="size-full object-cover" referrerPolicy="no-referrer" loading="lazy" />}
                     <span className={clsx("absolute right-2 top-2 grid size-5 place-items-center rounded-full", on ? "bg-primary" : "border-[1.5px] border-border bg-surface")}>
@@ -116,7 +118,7 @@ export function PostPicker({
       >
         <label className="flex flex-1 flex-col gap-1.5">
           <span className="text-[13px] font-medium">Post mais antigo? Cole o link</span>
-          <input value={link} onChange={(e) => setLink(e.target.value)} placeholder="https://instagram.com/p/…" className="h-9 rounded-md border border-border px-3 text-sm outline-none" />
+          <input value={link} onChange={(e) => setLink(e.target.value)} placeholder="https://instagram.com/p/…" inputMode="url" className="h-9 rounded-xl border border-border px-3 text-sm outline-none placeholder:text-tertiary focus:border-primary" />
         </label>
         <Button type="submit" variant="secondary">
           Adicionar

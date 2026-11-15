@@ -1,10 +1,15 @@
 import type { ReactNode } from "react";
 
-export function PageHeader({ title, actions }: { title: string; actions?: ReactNode }) {
+/** Topo da página (Figma "Topo"): trilha em Space Mono, título grande, subtítulo e ações à direita. */
+export function PageHeader({ title, eyebrow, subtitle, actions }: { title: string; eyebrow?: string; subtitle?: ReactNode; actions?: ReactNode }) {
   return (
-    <header className="flex h-16 items-center gap-2.5 border-b border-line bg-surface px-4 md:px-10">
-      <h1 className="min-w-0 flex-1 truncate text-xl font-bold md:text-[22px]">{title}</h1>
-      {actions}
+    <header className="flex flex-wrap items-end gap-4 px-4 pt-6 md:px-12 md:pt-8">
+      <div className="flex min-w-[220px] flex-1 flex-col gap-1.5">
+        {eyebrow && <p className="eyebrow">{eyebrow}</p>}
+        <h1 className="font-display text-[28px] leading-tight font-medium md:text-4xl">{title}</h1>
+        {subtitle && <p className="text-sm text-muted">{subtitle}</p>}
+      </div>
+      {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
     </header>
   );
 }

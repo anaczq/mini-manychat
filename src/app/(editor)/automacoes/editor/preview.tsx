@@ -12,12 +12,12 @@ export type Tab = "post" | "comentarios" | "direct";
 
 function Phone({ children, title }: { children: ReactNode; title: string }) {
   return (
-    <div className="w-[320px] max-w-full overflow-hidden rounded-[36px] border-[10px] border-ink bg-surface pb-4 pt-3 shadow-[0_20px_40px_rgba(0,0,0,0.12)]">
+    <div className="w-[320px] max-w-full overflow-hidden rounded-[36px] border-[10px] border-dark bg-surface pb-4 pt-3 shadow-[0_20px_40px_rgba(0,0,0,0.12)]">
       <div className="flex px-5 text-xs font-semibold">
         <span className="flex-1">9:41</span>●●● ▮
       </div>
-      <div className="flex items-center border-b border-line px-3.5 py-2.5">
-        <span className="flex-1 text-[15px] font-bold">{title}</span>
+      <div className="flex items-center border-b border-hairline px-3.5 py-2.5">
+        <span className="flex-1 text-[15px] font-semibold">{title}</span>
         <Send className="size-[18px]" />
       </div>
       {children}
@@ -41,7 +41,7 @@ export function Preview({ tab, value, username, firstPost }: { tab: Tab; value: 
   if (tab === "post") {
     return (
       <Phone title={username}>
-        <div className="aspect-square bg-[linear-gradient(135deg,#ede0fa,#dcedfc)]">
+        <div className="aspect-square bg-subtle">
           {firstPost?.thumbnailUrl && <img src={firstPost.thumbnailUrl} alt="" className="size-full object-cover" referrerPolicy="no-referrer" />}
         </div>
         <div className="flex gap-3.5 px-3.5 pt-2.5">
@@ -117,7 +117,7 @@ export function Preview({ tab, value, username, firstPost }: { tab: Tab; value: 
 
 export function Tabs({ tab, setTab }: { tab: Tab; setTab: (t: Tab) => void }) {
   return (
-    <div className="flex gap-1 rounded-[10px] border border-border bg-surface p-1">
+    <div className="flex gap-1 rounded-full bg-subtle p-1">
       {(
         [
           ["post", "Post"],
@@ -125,7 +125,13 @@ export function Tabs({ tab, setTab }: { tab: Tab; setTab: (t: Tab) => void }) {
           ["direct", "Direct"],
         ] as const
       ).map(([k, l]) => (
-        <button key={k} onClick={() => setTab(k)} className={clsx("rounded-[7px] px-3.5 py-1.5 text-[13px] font-semibold", tab === k ? "bg-ink text-white" : "text-muted")}>
+        <button
+          key={k}
+          type="button"
+          aria-pressed={tab === k}
+          onClick={() => setTab(k)}
+          className={clsx("rounded-full px-3.5 py-[9px] text-[13px] font-medium transition-colors", tab === k ? "bg-dark text-white" : "text-ink hover:bg-surface")}
+        >
           {l}
         </button>
       ))}

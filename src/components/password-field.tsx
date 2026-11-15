@@ -1,26 +1,27 @@
 "use client";
 
 import clsx from "clsx";
-import { Check, Eye, EyeOff, X } from "lucide-react";
+import { Check, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { fieldInputClass } from "@/components/auth-card";
 
 /** Campo de senha com o olhinho para mostrar/esconder. */
 export function PasswordField({ label, ...props }: { label: string } & Omit<React.ComponentProps<"input">, "type">) {
   const [visible, setVisible] = useState(false);
   return (
-    <label className="flex flex-col gap-1.5">
+    <label className="flex flex-col gap-2">
       <span className="text-[13px] font-medium">{label}</span>
       <span className="relative flex">
         <input
           type={visible ? "text" : "password"}
-          className="h-10 w-full rounded-md border border-border bg-surface pl-3 pr-10 text-sm outline-none placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary-soft"
+          className={fieldInputClass("pr-11!")}
           {...props}
         />
         <button
           type="button"
           onClick={() => setVisible((v) => !v)}
           aria-label={visible ? "Esconder senha" : "Mostrar senha"}
-          className="absolute right-1 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded text-muted hover:text-ink"
+          className="absolute top-1/2 right-1.5 flex size-8 -translate-y-1/2 items-center justify-center rounded-lg text-muted hover:text-ink"
         >
           {visible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
         </button>
@@ -31,8 +32,9 @@ export function PasswordField({ label, ...props }: { label: string } & Omit<Reac
 
 function Rule({ ok, children }: { ok: boolean; children: React.ReactNode }) {
   return (
-    <li className={clsx("flex items-center gap-1.5 text-[13px] font-medium", ok ? "text-success" : "text-muted")}>
-      {ok ? <Check className="size-3.5" /> : <X className="size-3.5" />}
+    <li className={clsx("flex items-center gap-2 text-xs", ok ? "font-medium text-success" : "text-muted")}>
+      {ok ? <Check className="size-3 shrink-0" aria-hidden /> : <span aria-hidden className="mx-[3px] size-1.5 shrink-0 rounded-full bg-border-strong" />}
+      <span className="sr-only">{ok ? "Cumprido: " : "Pendente: "}</span>
       {children}
     </li>
   );
@@ -53,9 +55,9 @@ export function NewPasswordFields({ onValidChange }: { onValidChange: (valid: bo
 
   return (
     <>
-      <PasswordField label="Senha nova" name="newPassword" autoComplete="new-password" minLength={8} required value={password} onChange={(e) => update(e.target.value, confirm)} />
-      <PasswordField label="Repita a senha nova" name="confirm" autoComplete="new-password" minLength={8} required value={confirm} onChange={(e) => update(password, e.target.value)} />
-      <ul className="-mt-1 flex flex-col gap-1">
+      <PasswordField label="Senha nova" name="newPassword" autoComplete="new-password" placeholder="Mínimo de 8 caracteres" minLength={8} required value={password} onChange={(e) => update(e.target.value, confirm)} />
+      <PasswordField label="Repita a senha nova" name="confirm" autoComplete="new-password" placeholder="Igual à de cima" minLength={8} required value={confirm} onChange={(e) => update(password, e.target.value)} />
+      <ul className="flex flex-col gap-1.5">
         <Rule ok={longEnough}>Pelo menos 8 caracteres</Rule>
         <Rule ok={matches}>As duas senhas conferem</Rule>
       </ul>

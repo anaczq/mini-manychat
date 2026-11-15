@@ -8,13 +8,13 @@ import { Modal } from "@/components/modal";
 import { Button } from "@/components/ui";
 
 const OPTIONS = [
-  { key: "link", icon: Link2, title: "Link por DM a partir de comentários", sub: "Quem comentar a palavra recebe um link no Direct", tone: "text-accent-blue bg-accent-blue-soft", popular: true },
-  { key: "arquivo", icon: ImageIcon, title: "Entregar imagem", sub: "A pessoa responde o DM e recebe a imagem como anexo", tone: "text-accent-green bg-accent-green-soft" },
-  { key: "resposta", icon: Reply, title: "Só responder o comentário", sub: "Resposta pública aleatória, sem DM", tone: "text-accent-orange bg-accent-orange-soft" },
-  { key: "zero", icon: Plus, title: "Começar do zero", sub: "Configure cada passo você mesma", tone: "text-muted bg-subtle" },
+  { key: "link", icon: Link2, title: "Link por DM a partir de comentários", sub: "Quem comentar a palavra recebe um link no Direct", tone: "text-primary bg-primary-soft", popular: true },
+  { key: "arquivo", icon: ImageIcon, title: "Entregar imagem", sub: "A pessoa responde o DM e recebe a imagem como anexo", tone: "text-success bg-success-soft" },
+  { key: "resposta", icon: Reply, title: "Só responder o comentário", sub: "Resposta pública aleatória, sem DM", tone: "text-warning bg-warning-soft" },
+  { key: "zero", icon: Plus, title: "Começar do zero", sub: "Configure cada passo você mesma", tone: "text-secondary bg-subtle" },
 ];
 
-// Popup M1 do Figma: abre por cima da tela atual.
+// Popup "Nova automação · escolher modelo" (Figma 809:16274 / 809:16520): abre por cima da tela atual.
 export function TemplateChooser({ onClose }: { onClose: () => void }) {
   const router = useRouter();
   const [choice, setChoice] = useState("link");
@@ -27,35 +27,42 @@ export function TemplateChooser({ onClose }: { onClose: () => void }) {
       onClose={onClose}
       footer={
         <>
-          <Button variant="secondary" onClick={onClose}>
+          <Button type="button" variant="secondary" onClick={onClose}>
             Cancelar
           </Button>
-          <Button onClick={() => go(choice)}>Continuar</Button>
+          <Button type="button" onClick={() => go(choice)}>
+            Continuar
+          </Button>
         </>
       }
     >
-      {OPTIONS.map(({ key, icon: Icon, title, sub, tone, popular }) => (
-        <button
-          key={key}
-          onClick={() => setChoice(key)}
-          onDoubleClick={() => go(key)}
-          className={clsx(
-            "flex items-center gap-3.5 rounded-[10px] border p-3.5 text-left",
-            choice === key ? "border-2 border-primary bg-accent-blue-soft" : "border-line",
-          )}
-        >
-          <span className={clsx("grid size-10 shrink-0 place-items-center rounded-[10px]", tone, choice === key && "!bg-surface")}>
-            <Icon className="size-5" />
-          </span>
-          <span className="flex-1">
-            <span className="flex items-center gap-1.5 text-[15px] font-semibold">
-              {title}
-              {popular && <span className="rounded bg-chip-popular px-1.5 text-[10px] font-bold text-white">POPULAR</span>}
+      {OPTIONS.map(({ key, icon: Icon, title, sub, tone, popular }) => {
+        const selected = choice === key;
+        return (
+          <button
+            key={key}
+            type="button"
+            aria-pressed={selected}
+            onClick={() => setChoice(key)}
+            onDoubleClick={() => go(key)}
+            className={clsx(
+              "flex items-center gap-3.5 rounded-[10px] text-left transition-colors",
+              selected ? "border-2 border-primary bg-primary-soft p-[13px]" : "border border-border p-3.5 hover:bg-bg",
+            )}
+          >
+            <span className={clsx("grid size-10 shrink-0 place-items-center rounded-[10px]", selected ? "bg-surface text-primary" : tone)}>
+              <Icon className="size-5" />
             </span>
-            <span className="text-[13px] text-muted">{sub}</span>
-          </span>
-        </button>
-      ))}
+            <span className="min-w-0 flex-1">
+              <span className="flex items-start gap-1.5 text-[15px] leading-normal font-semibold sm:items-center">
+                <span className="min-w-0 flex-1 sm:flex-none">{title}</span>
+                {popular && <span className="mt-1 shrink-0 rounded bg-warning px-1.5 font-mono text-[10px] leading-[15px] text-white sm:mt-0">POPULAR</span>}
+              </span>
+              <span className="block text-[13px] leading-normal text-muted">{sub}</span>
+            </span>
+          </button>
+        );
+      })}
     </Modal>
   );
 }

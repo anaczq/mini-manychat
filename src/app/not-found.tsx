@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { EmptyState } from "@/components/empty-state";
-import { Button } from "@/components/ui";
+import { buttonClass } from "@/components/ui";
 
 // URL que não existe (fora do painel): tela cheia, sem sidebar.
 export default function NotFound() {
@@ -16,10 +16,11 @@ export default function NotFound() {
 export function NotFoundContent() {
   return (
     <EmptyState
+      eyebrow="Erro 404"
       title="Página não encontrada"
       action={
-        <Link href="/">
-          <Button>Voltar ao início</Button>
+        <Link href="/" className={buttonClass("primary", "px-3.5 text-sm! font-semibold")}>
+          Voltar ao início
         </Link>
       }
     >

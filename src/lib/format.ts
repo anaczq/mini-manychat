@@ -15,6 +15,16 @@ export function timeAgo(date: Date, now = new Date()): string {
 export const int = (n: number) => n.toLocaleString("pt-BR");
 
 /** Porcentagem com 1 casa, ou "—" quando não há base. */
+/** Tempo curto para listas estreitas: "agora", "5 min", "3 h", "2 d", "4 sem". */
+export function shortAgo(date: Date, now = new Date()): string {
+  const s = Math.max(0, Math.round((now.getTime() - date.getTime()) / 1000));
+  if (s < 60) return "agora";
+  if (s < 3600) return `${Math.round(s / 60)} min`;
+  if (s < 86400) return `${Math.round(s / 3600)} h`;
+  if (s < 86400 * 7) return `${Math.round(s / 86400)} d`;
+  return `${Math.round(s / (86400 * 7))} sem`;
+}
+
 export function pct(part: number, total: number): string {
   if (!total) return "—";
   const v = (part / total) * 100;

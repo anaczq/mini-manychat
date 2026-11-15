@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useState } from "react";
 import { resetPasswordAction } from "@/app/actions/senha";
-import { AuthScreen, Field, FormError } from "@/components/auth-card";
+import { AuthScreen, authButton, Field, FormError } from "@/components/auth-card";
 import { NewPasswordFields } from "@/components/password-field";
-import { Button } from "@/components/ui";
+import { Button, buttonClass } from "@/components/ui";
 
 export default function ForgotPasswordPage() {
   const [backup, setBackup] = useState(false);
@@ -26,47 +26,56 @@ export default function ForgotPasswordPage() {
 
   if (done) {
     return (
-      <AuthScreen>
-        <h1 className="text-xl font-bold">Senha redefinida</h1>
-        <p className="text-sm text-muted">Todas as sessões foram encerradas. Entre com a senha nova e o código 2FA.</p>
-        <Link href="/login">
-          <Button className="h-10 w-full">Ir para o login</Button>
+      <AuthScreen
+        painel="recuperar"
+        eyebrow="02 · Recuperar acesso"
+        title="Senha redefinida"
+        subtitle="Todas as sessões foram encerradas. Entre com a senha nova e o código 2FA."
+      >
+        <Link href="/login" className={buttonClass("primary", authButton)}>
+          Ir para o login
         </Link>
       </AuthScreen>
     );
   }
 
   return (
-    <AuthScreen>
-      <h1 className="text-xl font-bold">Esqueci a senha</h1>
-      <p className="text-sm text-muted">
-        {backup ? "Use um dos seus códigos de backup para provar que é você." : "Use o código do seu app autenticador para provar que é você."}
-      </p>
+    <AuthScreen
+      painel="recuperar"
+      eyebrow="02 · Recuperar acesso"
+      title="Esqueci a senha"
+      subtitle={backup ? "Use um dos seus códigos de backup para provar que é você." : "Use o código do seu app autenticador para provar que é você."}
+    >
       {error && <FormError>{error}</FormError>}
-      <form action={onSubmit} className="flex flex-col gap-4">
-        <Field label="E-mail" name="email" type="email" autoComplete="username" required />
-        <NewPasswordFields onValidChange={setValid} />
-        <Field
-          key={backup ? "backup" : "totp"}
-          label={backup ? "Código de backup" : "Código 2FA"}
-          name="code"
-          inputMode={backup ? "text" : "numeric"}
-          autoComplete="one-time-code"
-          placeholder={backup ? "XXXXX-XXXXX" : "000 000"}
-          required
-        />
-        <Button type="submit" disabled={pending || !valid} className="h-10 w-full">
-          {pending ? "Redefinindo…" : "Redefinir senha"}
-        </Button>
+      <form action={onSubmit} className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4">
+          <Field label="E-mail" name="email" type="email" autoComplete="username" placeholder="voce@email.com" required />
+          <NewPasswordFields onValidChange={setValid} />
+          <Field
+            key={backup ? "backup" : "totp"}
+            label={backup ? "Código de backup" : "Código 2FA"}
+            name="code"
+            inputMode={backup ? "text" : "numeric"}
+            autoComplete="one-time-code"
+            placeholder={backup ? "XXXXX-XXXXX" : "000 000"}
+            className="font-mono text-[13px]!"
+            required
+          />
+        </div>
+        <div className="flex flex-col gap-3.5">
+          <Button type="submit" disabled={pending || !valid} className={authButton}>
+            {pending ? "Redefinindo…" : "Redefinir senha"}
+          </Button>
+          <div className="flex justify-between gap-3 text-sm font-medium">
+            <button type="button" onClick={() => setBackup((v) => !v)} className="text-primary">
+              {backup ? "Usar o app autenticador" : "Usar código de backup"}
+            </button>
+            <Link href="/login" className="text-muted hover:text-ink">
+              Voltar ao login
+            </Link>
+          </div>
+        </div>
       </form>
-      <div className="flex justify-between text-sm font-medium">
-        <button type="button" onClick={() => setBackup((v) => !v)} className="text-primary">
-          {backup ? "Usar o app autenticador" : "Usar código de backup"}
-        </button>
-        <Link href="/login" className="text-muted">
-          Voltar ao login
-        </Link>
-      </div>
     </AuthScreen>
   );
 }

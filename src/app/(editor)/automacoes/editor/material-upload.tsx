@@ -59,16 +59,16 @@ export function MaterialUpload({
   if (asset) {
     const Icon = asset.mime === "application/pdf" ? FileText : ImageIcon;
     return (
-      <div className="flex items-center gap-2.5 rounded-[10px] bg-bg px-3 py-2.5">
-        <span className={clsx("grid size-8 place-items-center rounded-md", asset.mime === "application/pdf" ? "bg-error-soft text-error" : "bg-accent-blue-soft text-accent-blue")}>
+      <div className="flex items-center gap-2.5 rounded-[14px] bg-bg px-3 py-2.5">
+        <span className={clsx("grid size-8 place-items-center rounded-md", asset.mime === "application/pdf" ? "bg-error-soft text-error" : "bg-primary-soft text-primary")}>
           <Icon className="size-4" />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate text-[13px] font-semibold">{asset.name}</p>
+          <p className="truncate text-[13px] font-medium">{asset.name}</p>
           <p className="text-xs text-muted">{size(asset.sizeBytes)} · vai como link no fim da mensagem</p>
         </div>
-        <button aria-label="Remover arquivo" onClick={() => onChange(null)}>
-          <Trash2 className="size-4 text-muted" />
+        <button type="button" aria-label="Remover arquivo" onClick={() => onChange(null)} className="text-tertiary hover:text-error">
+          <Trash2 className="size-4" />
         </button>
       </div>
     );
@@ -89,22 +89,22 @@ export function MaterialUpload({
         }}
         disabled={progress !== null}
         className={clsx(
-          "flex flex-col items-center gap-1.5 rounded-[10px] border-[1.5px] border-dashed px-4 py-6 text-center",
-          over ? "border-accent-blue bg-accent-blue-soft" : "border-border bg-bg",
+          "flex flex-col items-center gap-1.5 rounded-[14px] border-[1.5px] border-dashed px-4 py-6 text-center",
+          over ? "border-primary bg-primary-soft" : "border-border bg-bg",
         )}
       >
-        <Upload className="size-5 text-accent-blue" />
-        <span className="text-sm font-semibold">{progress !== null ? `Enviando… ${progress}%` : "Arraste o arquivo aqui ou clique para escolher"}</span>
+        <Upload className="size-5 text-primary" />
+        <span className="text-sm font-medium">{progress !== null ? `Enviando… ${progress}%` : "Arraste o arquivo aqui ou clique para escolher"}</span>
         <span className="text-xs text-muted">PNG ou JPG até 8 MB</span>
         {progress !== null && (
           <span className="mt-1 h-1 w-full max-w-[260px] rounded-full bg-subtle">
-            <span className="block h-1 rounded-full bg-accent-blue" style={{ width: `${progress}%` }} />
+            <span className="block h-1 rounded-full bg-primary" style={{ width: `${progress}%` }} />
           </span>
         )}
       </button>
       <input ref={input} type="file" accept="image/png,image/jpeg" hidden onChange={(e) => e.target.files?.[0] && send(e.target.files[0])} />
       {error && (
-        <p role="alert" className="flex items-center gap-2 rounded-lg bg-error-soft px-3 py-2 text-[13px] font-medium text-error">
+        <p role="alert" className="flex items-center gap-2 rounded-xl bg-error-soft px-3 py-2 text-[13px] font-medium text-error">
           <AlertTriangle className="size-4 shrink-0" /> {error}
         </p>
       )}

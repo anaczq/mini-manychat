@@ -5,7 +5,7 @@ import { Check, Copy, Download } from "lucide-react";
 import { useRouter } from "next/navigation";
 import QRCode from "qrcode";
 import { useState } from "react";
-import { AuthScreen, Field, FormError } from "@/components/auth-card";
+import { AuthScreen, authButton, Field, FormError } from "@/components/auth-card";
 import { PasswordField } from "@/components/password-field";
 import { Button } from "@/components/ui";
 import { authClient } from "@/lib/auth-client";
@@ -21,15 +21,15 @@ function Steps({ current }: { current: Step }) {
   ];
   const order: Step[] = ["senha", "escanear", "codigos"];
   return (
-    <ol className="flex items-center gap-2 text-[13px]">
+    <ol className="flex flex-wrap items-center gap-2 text-[13px]">
       {steps.map(([key, label], i) => {
         const active = order.indexOf(current) >= i;
         return (
           <li key={key} className="flex items-center gap-1.5">
-            <span className={clsx("grid size-5 place-items-center rounded-full text-[11px] font-bold", active ? "bg-primary text-white" : "bg-subtle text-muted")}>
+            <span className={clsx("grid size-5 place-items-center rounded-full font-mono text-[11px]", active ? "bg-primary text-white" : "bg-subtle text-muted")}>
               {i + 1}
             </span>
-            <span className={active ? "font-semibold" : "text-muted"}>{label}</span>
+            <span className={active ? "font-medium" : "text-muted"}>{label}</span>
             {i < 2 && <span className="mx-1 h-px w-4 bg-border" />}
           </li>
         );
@@ -79,18 +79,22 @@ export function Setup2fa() {
     URL.revokeObjectURL(a.href);
   }
 
+  const head = {
+    senha: { title: "Ative a verificação em duas etapas", subtitle: "Obrigatório para acessar o painel. Confirme sua senha para gerar o QR code." },
+    escanear: { title: "Escaneie o QR code", subtitle: "Use o Google Authenticator, 1Password ou similar." },
+    codigos: { title: "Guarde seus códigos de backup", subtitle: "Se perder o celular, cada código entra uma única vez. Eles não serão mostrados de novo." },
+  }[step];
+
   return (
-    <AuthScreen>
+    <AuthScreen eyebrow="01 · Acesso · Ativar 2FA" title={head.title} subtitle={head.subtitle}>
       <Steps current={step} />
       {error && <FormError>{error}</FormError>}
 
       {step === "senha" && (
         <>
-          <h1 className="text-xl font-bold">Ative a verificação em duas etapas</h1>
-          <p className="text-sm text-muted">Obrigatório para acessar o painel. Confirme sua senha para gerar o QR code.</p>
-          <form action={start} className="flex flex-col gap-4">
-            <PasswordField label="Senha" name="password" autoComplete="current-password" required />
-            <Button type="submit" disabled={pending} className="h-10 w-full">
+          <form action={start} className="flex flex-col gap-6">
+            <PasswordField label="Senha" name="password" autoComplete="current-password" placeholder="Sua senha" required />
+            <Button type="submit" disabled={pending} className={authButton}>
               {pending ? "Gerando…" : "Continuar"}
             </Button>
           </form>
@@ -99,25 +103,23 @@ export function Setup2fa() {
 
       {step === "escanear" && (
         <>
-          <h1 className="text-xl font-bold">Escaneie o QR code</h1>
-          <p className="text-sm text-muted">Use o Google Authenticator, 1Password ou similar.</p>
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
-            {qr && <img src={qr} alt="QR code para o app autenticador" className="size-[148px] rounded-md border border-border" />}
+            {qr && <img src={qr} alt="QR code para o app autenticador" className="size-[148px] rounded-xl border border-border" />}
             <div className="flex flex-col gap-1.5">
               <p className="text-[13px] font-semibold">Não consegue escanear?</p>
               <p className="text-xs text-muted">Digite esta chave no app:</p>
               <button
                 type="button"
                 onClick={() => secret && navigator.clipboard.writeText(secret)}
-                className="flex items-center gap-1.5 break-all rounded-md bg-subtle px-2 py-1.5 text-left font-mono text-xs font-semibold"
+                className="flex items-center gap-1.5 rounded-lg bg-subtle px-2.5 py-1.5 text-left font-mono text-xs break-all"
               >
                 {secret} <Copy className="size-3.5 shrink-0 text-muted" />
               </button>
             </div>
           </div>
-          <form action={confirm} className="flex flex-col gap-4">
-            <Field label="Código de 6 dígitos do app" name="code" inputMode="numeric" autoComplete="one-time-code" placeholder="000 000" required />
-            <Button type="submit" disabled={pending} className="h-10 w-full">
+          <form action={confirm} className="flex flex-col gap-6">
+            <Field label="Código de 6 dígitos do app" name="code" inputMode="numeric" autoComplete="one-time-code" placeholder="000 000" className="font-mono text-[13px]!" required />
+            <Button type="submit" disabled={pending} className={authButton}>
               {pending ? "Verificando…" : "Confirmar e continuar"}
             </Button>
           </form>
@@ -129,9 +131,7 @@ export function Setup2fa() {
           <p className="flex items-center gap-2 text-sm font-semibold text-success">
             <Check className="size-4" /> 2FA ativado
           </p>
-          <h1 className="text-xl font-bold">Guarde seus códigos de backup</h1>
-          <p className="text-sm text-muted">Se perder o celular, cada código entra uma única vez. Eles não serão mostrados de novo.</p>
-          <ul className="grid grid-cols-2 gap-2 rounded-md bg-subtle p-4 font-mono text-sm font-semibold">
+          <ul className="grid grid-cols-2 gap-2 rounded-2xl bg-subtle p-4 font-mono text-sm">
             {codes.map((c) => (
               <li key={c}>{c}</li>
             ))}
@@ -148,7 +148,7 @@ export function Setup2fa() {
             <input type="checkbox" checked={saved} onChange={(e) => setSaved(e.target.checked)} className="size-4 accent-primary" />
             Guardei os códigos em um lugar seguro
           </label>
-          <Button disabled={!saved} className="h-10 w-full" onClick={() => router.replace("/")}>
+          <Button disabled={!saved} className={authButton} onClick={() => router.replace("/")}>
             Ir para o painel
           </Button>
         </>

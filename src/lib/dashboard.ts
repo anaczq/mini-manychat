@@ -105,6 +105,9 @@ export async function getDashboard(userId: string) {
         active: keywords.active,
         // Nome qualificado: o Drizzle não qualifica colunas numa query de uma tabela só.
         week: sql<number>`(select count(*)::int from comment_events ce where ce.keyword_id = "keywords"."id" and ce.created_at >= ${since7})`,
+        sent: sql<number>`(select count(*)::int from comment_events ce where ce.keyword_id = "keywords"."id" and ce.created_at >= ${since7} and ce.dm_status = 'sent')`,
+        errors: sql<number>`(select count(*)::int from comment_events ce where ce.keyword_id = "keywords"."id" and ce.created_at >= ${since7} and (ce.dm_status like 'failed%' or ce.status = 'failed'))`,
+        clicks: sql<number>`(select count(*)::int from link_clicks lc where lc.keyword_id = "keywords"."id" and lc.first_clicked_at >= ${since7})`,
       })
       .from(keywords)
       .where(eq(keywords.active, true))
@@ -149,6 +152,8 @@ export async function getDashboard(userId: string) {
       healthy: conn?.healthStatus === "healthy",
       username: conn?.username ?? null,
       weekResponses: agg.sent7,
+      // Funil dos últimos 7 dias: com palavra → DM tentado → DM entregue → clique.
+      funnel: { matched: agg.matched7, attempted: sentTotal, sent: agg.sent7, clicks: clicks?.c7 ?? 0 },
     };
   });
 }
