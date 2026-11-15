@@ -100,11 +100,11 @@ Siga `.claude/docs/DEPLOY.md` com a pessoa. As variáveis já estão na Vercel d
 
 ## Atualizar para uma versão nova ("quero atualizar")
 
-O repositório da pessoa foi criado pelo template, então não recebe atualizações sozinho. O original é **https://github.com/ana-toh/mini-manychat** (a pessoa precisa continuar com acesso a ele).
+O repositório da pessoa foi criado pelo template, então não recebe atualizações sozinho. O original é **https://github.com/anaczq/mini-manychat** (a pessoa precisa continuar com acesso a ele).
 
 1. Confira que `git` funciona (`git --version`). Se faltar: Mac `xcode-select --install`; Windows `winget install --id Git.Git` e reabrir o app do Claude.
 2. `git status` precisa estar limpo. Se não estiver, mostre à pessoa os arquivos alterados e pergunte se pode guardar (`git stash`).
-3. Se ainda não existir o remote `original` (`git remote -v`): `git remote add original https://github.com/ana-toh/mini-manychat.git`. Se pedir login, a pessoa entra pelo navegador.
+3. Se ainda não existir o remote `original` (`git remote -v`): `git remote add original https://github.com/anaczq/mini-manychat.git`. Se pedir login, a pessoa entra pelo navegador.
 4. `git fetch original`, depois:
    - primeira atualização (o histórico do template é separado): `git merge original/main --allow-unrelated-histories -X theirs -m "Atualização"`
    - das próximas vezes: `git merge original/main -m "Atualização"`
