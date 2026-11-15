@@ -1,4 +1,4 @@
-# Mini Manychat
+# Nooi Reply
 
 Responde comentários do Instagram sozinho: quem comenta a palavra-chave num post ou reel recebe o material por **Direct** e uma resposta pública no comentário. Painel próprio, na sua conta da Vercel, sem mensalidade de ferramenta de automação.
 
@@ -37,8 +37,12 @@ Depois de configurado, diga **quero publicar** para o app ficar no ar 24 h por d
 |---|---|
 | `quero configurar` | instalação do zero, ou continua de onde parou |
 | `quero publicar` | coloca o app no ar 24 h (Vercel) |
-| `quero atualizar` | traz a versão mais nova do Mini Manychat |
+| `quero atualizar` | traz a versão mais nova do Nooi Reply |
 | `não está respondendo os comentários` | o Claude investiga e corrige |
+
+## Quer que eu instale para você?
+
+Eu faço a instalação completa na sua conta e te entrego o painel funcionando. Escreva para **ana@theoutsiderhub.com** com o assunto "Instalação Nooi Reply".
 
 ## Documentação técnica
 
@@ -47,3 +51,5 @@ Fica em [`.claude/docs`](.claude/docs/README.md): como funciona, publicação, r
 ## Licença
 
 Grátis para uso pessoal, nas suas próprias contas do Instagram. É proibido revender ou redistribuir o código e instalar para clientes ou terceiros sem licença comercial. Veja [`LICENSE`](LICENSE).
+
+Licença comercial (para instalar para clientes): **ana@theoutsiderhub.com**.
