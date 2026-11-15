@@ -2,28 +2,28 @@ Mini Manychat — Licença de uso pessoal
 
 Copyright (c) 2026 Ana Quiroz. Todos os direitos reservados.
 
-Este software não é de código aberto. Ao comprar o Mini Manychat, você recebe uma
-licença pessoal, não exclusiva e intransferível, nos termos abaixo.
+O código está publicado para consulta e uso pessoal, mas não é de código aberto.
+Você recebe gratuitamente uma licença pessoal, não exclusiva e intransferível,
+nos termos abaixo.
 
 VOCÊ PODE
-1. Instalar e usar o software em UMA instalação, para as suas próprias contas
+1. Instalar e usar o software gratuitamente, para as suas próprias contas
    do Instagram.
-2. Alterar o código para uso próprio nessa instalação.
-3. Manter uma cópia privada do código na sua conta do GitHub, criada a partir
-   do repositório original.
+2. Alterar o código para uso próprio.
+3. Manter uma cópia do código na sua conta do GitHub, criada a partir do
+   repositório original.
 
 VOCÊ NÃO PODE
-1. Revender, sublicenciar, alugar, doar ou distribuir o código, no todo ou em
-   parte, original ou alterado.
-2. Publicar o código em repositório público ou compartilhá-lo com terceiros.
+1. Vender, sublicenciar, alugar ou distribuir o código, no todo ou em parte,
+   original ou alterado.
+2. Publicar cópias do código em outros repositórios públicos ou sites.
 3. Instalar o software para clientes ou terceiros, nem oferecê-lo como serviço,
    sem uma licença comercial por escrito.
 4. Usar o código como base de um produto concorrente.
 
-ACESSO E ATUALIZAÇÕES
-O acesso ao repositório original e às atualizações pode ser encerrado em caso de
-descumprimento desta licença. Em caso de descumprimento, a licença termina
-automaticamente e você deve apagar todas as cópias do código.
+DESCUMPRIMENTO
+Em caso de descumprimento, a licença termina automaticamente e você deve apagar
+todas as cópias do código.
 
 SERVIÇOS DE TERCEIROS
 O software depende de serviços de terceiros (Vercel, Neon, Upstash, Zernio,

@@ -46,4 +46,4 @@ Fica em [`.claude/docs`](.claude/docs/README.md): como funciona, publicação, r
 
 ## Licença
 
-Uso pessoal: uma compra vale uma instalação. É proibido revender ou redistribuir o código. Veja [`LICENSE`](LICENSE).
+Grátis para uso pessoal, nas suas próprias contas do Instagram. É proibido revender ou redistribuir o código e instalar para clientes ou terceiros sem licença comercial. Veja [`LICENSE`](LICENSE).
