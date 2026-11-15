@@ -2,6 +2,7 @@
   "name": "mini-manychat",
   "version": "0.1.0",
   "private": true,
+  "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "configurar": "tsx scripts/configurar.mts",
     "dev": "next dev",

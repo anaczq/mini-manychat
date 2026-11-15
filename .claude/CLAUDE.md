@@ -4,6 +4,8 @@ Painel que responde comentários do Instagram: quem comenta uma palavra-chave nu
 
 **Quem abre esta pasta normalmente não é dev.** Fale em português simples, um passo por vez, e faça você mesmo tudo o que for comando. Só peça à pessoa o que exige o navegador ou a conta dela (criar contas, clicar no painel da Vercel, aprovar login).
 
+A pessoa comprou o Mini Manychat, criou o próprio repositório pelo template do GitHub e clonou pelo GitHub Desktop (passo a passo no `README.md` da raiz). Licença de uso pessoal em `LICENSE`.
+
 Docs técnicos: `.claude/docs/README.md` (como funciona), `.claude/docs/DEPLOY.md` (publicar na Vercel), `.claude/docs/PRD.md` (requisitos), `.claude/docs/SECURITY.md`.
 
 @docs/AGENTS.md
@@ -95,6 +97,22 @@ A URL do túnel muda a cada vez: repita os passos 2–3 sempre que reabrir.
 ## Publicar (24 h no ar)
 
 Siga `.claude/docs/DEPLOY.md` com a pessoa. As variáveis já estão na Vercel desde a etapa 5; falta subir o código, definir `APP_URL` e apontar o webhook da Zernio para o endereço de produção.
+
+## Atualizar para uma versão nova ("quero atualizar")
+
+O repositório da pessoa foi criado pelo template, então não recebe atualizações sozinho. O original é **https://github.com/ana-toh/mini-manychat** (a pessoa precisa continuar com acesso a ele).
+
+1. Confira que `git` funciona (`git --version`). Se faltar: Mac `xcode-select --install`; Windows `winget install --id Git.Git` e reabrir o app do Claude.
+2. `git status` precisa estar limpo. Se não estiver, mostre à pessoa os arquivos alterados e pergunte se pode guardar (`git stash`).
+3. Se ainda não existir o remote `original` (`git remote -v`): `git remote add original https://github.com/ana-toh/mini-manychat.git`. Se pedir login, a pessoa entra pelo navegador.
+4. `git fetch original`, depois:
+   - primeira atualização (o histórico do template é separado): `git merge original/main --allow-unrelated-histories -X theirs -m "Atualização"`
+   - das próximas vezes: `git merge original/main -m "Atualização"`
+5. `pnpm install`, `pnpm env:pull` e `pnpm db:migrate` (aplica só o que for novo no banco).
+6. `pnpm typecheck` e `pnpm test`. Se falhar, não publique: mostre o erro.
+7. `git push` publica na Vercel (se o GitHub já estiver ligado; senão, siga o `DEPLOY.md`).
+
+Diga à pessoa o que mudou com base nas mensagens dos commits novos (`git log HEAD@{1}..HEAD --oneline`).
 
 ## Problemas comuns
 

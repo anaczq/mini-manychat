@@ -8,35 +8,26 @@ Com o app publicado, ele responde comentários 24 h por dia, sem depender do seu
 
 > Usando o app do Claude? Diga "quero publicar" e ele faz os comandos. Você só aprova os logins no navegador e clica no painel da Vercel.
 
-## 1. Subir o código para o seu GitHub
+## 1. Conferir o código no seu GitHub
 
-1. Crie uma conta grátis em https://github.com/signup.
-2. Instale o GitHub CLI (Mac: `brew install gh`; Windows: `winget install --id GitHub.cli`, depois reabra o terminal) e entre:
-   ```bash
-   gh auth login --web
-   ```
-   Abra o link, cole o código e aprove.
-3. Crie o seu repositório (privado) e envie o código:
-   ```bash
-   git init -b main
-   git add .
-   git commit -m "Mini Manychat"
-   gh repo create mini-manychat --private --source=. --push
-   ```
-   Confira antes do commit que `git status` **não** lista `.env.local` (ele fica de fora pelo `.gitignore`).
+O seu repositório privado `mini-manychat` já existe: você o criou pelo **Use this template** e clonou pelo GitHub Desktop (veja o `README.md` na raiz). Se mudou algum arquivo, envie antes de publicar: no GitHub Desktop, **Commit to main → Push origin**.
+
+Confira que o `.env.local` **não** aparece na lista de mudanças do GitHub Desktop (ele fica de fora pelo `.gitignore`).
 
 ## 2. Ligar o GitHub ao projeto na Vercel
+
+Pelo painel: Vercel → projeto **mini-manychat** → **Settings → Git → Connect Git Repository** → GitHub → se pedir, **Install** o app da Vercel no GitHub e libere o repositório `mini-manychat` → escolha `mini-manychat`.
+
+Ou pelo terminal (precisa do repositório já liberado para a Vercel no GitHub):
 
 ```bash
 pnpm exec vercel git connect
 ```
 
-Ou pelo painel: Vercel → projeto **mini-manychat** → **Settings → Git → Connect Git Repository** → escolha `mini-manychat`.
-
-Daqui em diante, todo `git push` publica sozinho. Para o primeiro deploy: Vercel → **Deployments** → aguarde o build ficar **Ready** (2–3 min). Se não começou, faça um push vazio:
+Daqui em diante, todo `git push` publica sozinho. Para o primeiro deploy: Vercel → **Deployments** → aguarde o build ficar **Ready** (2–3 min). Se não começou, publique direto pelo terminal:
 
 ```bash
-git commit --allow-empty -m "Primeiro deploy" && git push
+pnpm exec vercel deploy --prod
 ```
 
 ## 3. Definir o endereço do app
