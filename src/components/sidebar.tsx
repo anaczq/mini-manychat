@@ -4,8 +4,9 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { type CSSProperties, useState } from "react";
 import { Icone, type IconeNome } from "@/components/icone";
+import { TemaSwitch } from "@/components/tema-switch";
 import { authClient } from "@/lib/auth-client";
 
 type NavItem = { href: string; label: string; icon: IconeNome };
@@ -69,7 +70,8 @@ export function Sidebar({ user, active }: { user: SidebarUser; active: boolean }
   return (
     <aside className="sticky top-0 hidden h-dvh w-[248px] shrink-0 flex-col gap-6 border-r border-hairline bg-bg px-4 pt-6 pb-4 md:flex">
       <Link href="/" className="flex shrink-0 items-center pl-3" aria-label="Início">
-        <Image src="/marca/logo-toh.png" alt="The Outsider Hub" width={149} height={32} priority className="h-8 w-auto" />
+        {/* Logo como máscara: a cor segue o tema (preto no claro, branco no escuro). */}
+        <span role="img" aria-label="The Outsider Hub" className="icone h-8 w-[149px] bg-ink" style={{ "--icone": "url(/marca/logo-toh.png)" } as CSSProperties} />
       </Link>
 
       <nav className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto">
@@ -117,11 +119,12 @@ export function Sidebar({ user, active }: { user: SidebarUser; active: boolean }
       </div>
 
       <div className="flex shrink-0 items-center gap-3 px-3 py-2">
-        <span className="grid size-8 shrink-0 place-items-center rounded-full bg-dark text-xs leading-4 font-medium text-white">{initials(user.name)}</span>
+        <span className="grid size-8 shrink-0 place-items-center rounded-full bg-dark text-xs leading-4 font-medium text-on-dark">{initials(user.name)}</span>
         <div className="min-w-0 flex-1">
           <p className="truncate text-base leading-6 font-medium">{user.name}</p>
           <p className="text-xs leading-5 text-muted">{user.role}</p>
         </div>
+        <TemaSwitch />
         <button
           type="button"
           title="Sair"

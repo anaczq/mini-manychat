@@ -32,7 +32,7 @@ function Step({ n, title, right, error, children }: { n: number; title: string; 
   return (
     <Card className={clsx("flex flex-col gap-3.5 p-[22px]", error && "border-error")}>
       <div className="flex items-center gap-2.5">
-        <span className="grid size-6 shrink-0 place-items-center rounded-full bg-dark font-mono text-xs text-white">{n}</span>
+        <span className="grid size-6 shrink-0 place-items-center rounded-full bg-dark font-mono text-xs text-on-dark">{n}</span>
         <h2 className="min-w-0 flex-1 font-display text-lg font-medium">{title}</h2>
         {right}
       </div>
@@ -52,7 +52,7 @@ function Segmented<K extends string>({ options, value, onChange }: { options: re
           type="button"
           aria-pressed={value === k}
           onClick={() => onChange(k)}
-          className={clsx(pill, value === k ? "bg-dark text-white" : "text-ink hover:bg-surface")}
+          className={clsx(pill, value === k ? "bg-dark text-on-dark" : "text-ink hover:bg-surface")}
         >
           {l}
         </button>
@@ -558,7 +558,7 @@ export function AutomationEditor({
       )}
 
       {toast && (
-        <div role="status" className="fixed bottom-24 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2.5 rounded-full bg-dark py-3 pr-5 pl-3 text-sm text-white md:bottom-8">
+        <div role="status" className="fixed bottom-24 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2.5 rounded-full bg-dark py-3 pr-5 pl-3 text-sm text-on-dark md:bottom-8">
           <span className="grid size-5 place-items-center rounded-full bg-success">
             <Check className="size-3" strokeWidth={3} />
           </span>

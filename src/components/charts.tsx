@@ -72,7 +72,7 @@ export function BarsChart({ data, unit, label }: { data: { day: string; n: numbe
                   {axisNumber(d.n)}
                 </span>
               )}
-              <span className="pointer-events-none absolute -top-9 left-1/2 z-10 hidden -translate-x-1/2 rounded-full bg-dark px-2.5 py-1 text-[11px] whitespace-nowrap text-white md:group-hover:block">
+              <span className="pointer-events-none absolute -top-9 left-1/2 z-10 hidden -translate-x-1/2 rounded-full bg-dark px-2.5 py-1 text-[11px] whitespace-nowrap text-on-dark md:group-hover:block">
                 {shortDate(d.day)} · {int(d.n)} {unit}
               </span>
             </div>

@@ -120,7 +120,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
                   key={r}
                   href={`/analytics?dias=${r}`}
                   aria-current={r === days ? "page" : undefined}
-                  className={clsx("rounded-full px-3 py-1.5 text-[13px] font-medium", r === days ? "bg-dark text-white" : "text-secondary hover:text-ink")}
+                  className={clsx("rounded-full px-3 py-1.5 text-[13px] font-medium", r === days ? "bg-dark text-on-dark" : "text-secondary hover:text-ink")}
                 >
                   {r} dias
                 </Link>

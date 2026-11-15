@@ -188,7 +188,7 @@ export default async function HistoricoPage({ searchParams }: { searchParams: Pr
 
       {detail && (
         <>
-          <Link href={href(sp, {})} aria-label="Fechar detalhe" className="fixed inset-0 z-50 bg-dark/40" scroll={false} />
+          <Link href={href(sp, {})} aria-label="Fechar detalhe" className="fixed inset-0 z-50 bg-black/50" scroll={false} />
           <aside
             aria-label="Detalhe do evento"
             className="fixed inset-x-0 bottom-0 z-50 flex max-h-[85dvh] flex-col gap-4 overflow-y-auto rounded-t-3xl bg-surface px-6 pt-6 pb-[max(2rem,env(safe-area-inset-bottom))] shadow-[0_-12px_40px_rgba(15,18,20,0.14)] md:inset-x-auto md:top-4 md:right-4 md:bottom-4 md:max-h-none md:w-[400px] md:rounded-3xl md:pt-5 md:shadow-[0_12px_40px_rgba(15,18,20,0.14)]"

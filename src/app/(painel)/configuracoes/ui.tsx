@@ -45,7 +45,7 @@ export function SettingsTabs({ active }: { active: Section }) {
               aria-current={s === active ? "page" : undefined}
               className={clsx(
                 "inline-flex h-[34px] items-center rounded-full px-3.5 text-[13px] font-medium whitespace-nowrap transition-colors",
-                s === active ? "bg-dark text-white" : "text-ink hover:bg-subtle",
+                s === active ? "bg-dark text-on-dark" : "text-ink hover:bg-subtle",
               )}
             >
               {SECTIONS[s].tab}

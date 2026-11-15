@@ -24,6 +24,7 @@
   --color-skeleton: #f2f3f4;
   --color-canvas: #f2f3f4;
   --color-dark: #101114;
+  --color-on-dark: #ffffff;
   --color-promo: #101114;
   --color-link-on-dark: #c7caff;
 
@@ -48,6 +49,89 @@
 
   --color-chip-popular: #bb4f00;
   --color-chip-beta: #006d36;
+}
+
+/* Modo escuro: segue o sistema, a não ser que a pessoa escolha na lua (cookie "tema" → data-theme no <html>).
+   As duas listas abaixo são iguais; mude as duas juntas. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --color-primary: #6b70ff;
+    --color-primary-hover: #8589ff;
+    --color-primary-soft: #1d1f45;
+    --color-rail: #0f1013;
+    --color-rail-item: #17181c;
+    --color-rail-icon: #9a9ea6;
+    --color-bg: #0f1013;
+    --color-surface: #17181c;
+    --color-border: #2a2c32;
+    --color-border-strong: #363840;
+    --color-hairline: rgb(255 255 255 / 0.08);
+    --color-line: #2a2c32;
+    --color-subtle: #202126;
+    --color-skeleton: #202126;
+    --color-canvas: #141519;
+    --color-dark: #f2f3f4;
+    --color-on-dark: #101114;
+    --color-promo: #1d1f45;
+    --color-ink: #f2f3f4;
+    --color-secondary: #c4c6cc;
+    --color-muted: #9a9ea6;
+    --color-tertiary: #8a8e97;
+    --color-success: #3fcf83;
+    --color-success-soft: #10291c;
+    --color-warning: #f2a640;
+    --color-warning-soft: #2e2210;
+    --color-error: #ff6d50;
+    --color-error-soft: #33150f;
+    --color-accent-blue: #7a7fff;
+    --color-accent-blue-soft: #1d1f45;
+    --color-accent-green: #3fcf93;
+    --color-accent-green-soft: #0f2a1f;
+    --color-accent-orange: #f5a04a;
+    --color-accent-orange-soft: #2e2010;
+    --color-chip-popular: #ff9a4d;
+    --color-chip-beta: #3fcf83;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-primary: #6b70ff;
+  --color-primary-hover: #8589ff;
+  --color-primary-soft: #1d1f45;
+  --color-rail: #0f1013;
+  --color-rail-item: #17181c;
+  --color-rail-icon: #9a9ea6;
+  --color-bg: #0f1013;
+  --color-surface: #17181c;
+  --color-border: #2a2c32;
+  --color-border-strong: #363840;
+  --color-hairline: rgb(255 255 255 / 0.08);
+  --color-line: #2a2c32;
+  --color-subtle: #202126;
+  --color-skeleton: #202126;
+  --color-canvas: #141519;
+  --color-dark: #f2f3f4;
+    --color-on-dark: #101114;
+  --color-promo: #1d1f45;
+  --color-ink: #f2f3f4;
+  --color-secondary: #c4c6cc;
+  --color-muted: #9a9ea6;
+  --color-tertiary: #8a8e97;
+  --color-success: #3fcf83;
+  --color-success-soft: #10291c;
+  --color-warning: #f2a640;
+  --color-warning-soft: #2e2210;
+  --color-error: #ff6d50;
+  --color-error-soft: #33150f;
+  --color-accent-blue: #7a7fff;
+  --color-accent-blue-soft: #1d1f45;
+  --color-accent-green: #3fcf93;
+  --color-accent-green-soft: #0f2a1f;
+  --color-accent-orange: #f5a04a;
+  --color-accent-orange-soft: #2e2010;
+  --color-chip-popular: #ff9a4d;
+  --color-chip-beta: #3fcf83;
 }
 
 html,

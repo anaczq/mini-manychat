@@ -68,7 +68,7 @@ export function Preview({ tab, value, username, firstPost }: { tab: Tab; value: 
               <div className="ml-auto max-w-[230px] whitespace-pre-wrap rounded-[18px] bg-[linear-gradient(180deg,#9940f2,#3373ff)] px-3 py-2.5 text-[13px] text-white">
                 {dm || "Escreva a mensagem no passo 4"}
                 {hasMaterial && value.buttonLabel && (
-                  <span className="mt-2 block rounded-lg bg-white/90 py-1.5 text-center text-xs font-semibold text-ink">{value.buttonLabel}</span>
+                  <span className="mt-2 block rounded-lg bg-white/90 py-1.5 text-center text-xs font-semibold text-black">{value.buttonLabel}</span>
                 )}
               </div>
               <span className="self-end text-[10px] text-muted">Enviado · agora</span>
@@ -130,7 +130,7 @@ export function Tabs({ tab, setTab }: { tab: Tab; setTab: (t: Tab) => void }) {
           type="button"
           aria-pressed={tab === k}
           onClick={() => setTab(k)}
-          className={clsx("rounded-full px-3.5 py-[9px] text-[13px] font-medium transition-colors", tab === k ? "bg-dark text-white" : "text-ink hover:bg-surface")}
+          className={clsx("rounded-full px-3.5 py-[9px] text-[13px] font-medium transition-colors", tab === k ? "bg-dark text-on-dark" : "text-ink hover:bg-surface")}
         >
           {l}
         </button>

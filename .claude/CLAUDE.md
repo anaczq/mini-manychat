@@ -53,10 +53,12 @@ Guie a pessoa no navegador, um item por vez:
 
 1. Abrir https://vercel.com/dashboard → projeto **mini-manychat** → aba **Storage**.
 2. **Create Database → Neon (Serverless Postgres)** → plano grátis → região **São Paulo (sa-east-1)** → criar → em "Connect Project" deixar marcados Development, Preview e Production → Connect.
-3. Voltar em **Storage → Create Database → Upstash (Redis)** → plano grátis → região **São Paulo** → criar → conectar ao projeto do mesmo jeito.
-4. Opcional, para enviar imagens no Direct: **Storage → Create → Blob** → conectar ao projeto. Sem ele, o material só pode ser link.
+3. Voltar em **Storage → Create Database → Upstash (Redis)** → plano grátis → região **São Paulo** → criar → em "Connect Project" marcar **Development**, Preview e Production → Connect.
+4. **Storage → Create → Blob** (guarda as imagens enviadas no Direct) → conectar ao projeto com **Development**, Preview e Production marcados.
 
-Confira com `pnpm exec vercel env ls` que apareceram `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `KV_REST_API_URL` e `KV_REST_API_TOKEN`.
+Sem **Development** marcado em cada um, o `pnpm env:pull` não traz as variáveis e o painel não abre no computador. Se esqueceu, abra o item em **Storage** e marque Development no projeto conectado.
+
+Confira com `pnpm exec vercel env ls` que apareceram `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `KV_REST_API_URL`, `KV_REST_API_TOKEN` e `BLOB_READ_WRITE_TOKEN`, todas com **Development** entre os ambientes.
 
 ## Etapa 4 — Zernio (Instagram)
 

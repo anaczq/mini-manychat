@@ -30,12 +30,12 @@ function Chip({ active, onClick, dot, label, count }: { active: boolean; onClick
       onClick={onClick}
       className={clsx(
         "inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full px-3 text-[13px] font-medium whitespace-nowrap transition-colors",
-        active ? "bg-dark text-white" : "border border-border bg-surface text-secondary hover:bg-bg",
+        active ? "bg-dark text-on-dark" : "border border-border bg-surface text-secondary hover:bg-bg",
       )}
     >
       {dot && <span className={clsx("size-[7px] rounded-full", dot)} />}
       {label}
-      {count !== undefined && <span className={clsx("font-mono text-[11px]", active ? "text-white/80" : "text-muted")}>{int(count)}</span>}
+      {count !== undefined && <span className={clsx("font-mono text-[11px]", active ? "text-on-dark/80" : "text-muted")}>{int(count)}</span>}
     </button>
   );
 }

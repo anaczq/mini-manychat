@@ -4,7 +4,7 @@ import type { ComponentProps, ReactNode } from "react";
 type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 
 const buttonStyles: Record<ButtonVariant, string> = {
-  primary: "bg-dark text-white hover:bg-dark/85",
+  primary: "bg-dark text-on-dark hover:bg-dark/85",
   secondary: "bg-surface text-ink border border-border hover:bg-bg",
   ghost: "bg-transparent text-primary hover:bg-primary-soft",
   danger: "bg-error text-white hover:opacity-90",

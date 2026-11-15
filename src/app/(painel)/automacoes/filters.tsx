@@ -61,12 +61,12 @@ export function AutomationFilters({ terms, counts }: { terms: string[]; counts: 
               onClick={() => set("estado", e.value)}
               className={clsx(
                 "inline-flex h-[30px] shrink-0 items-center gap-1.5 rounded-full px-3 text-xs font-medium whitespace-nowrap md:h-8 md:text-[13px]",
-                on ? "bg-dark text-white" : "border border-border bg-surface text-secondary hover:bg-bg",
+                on ? "bg-dark text-on-dark" : "border border-border bg-surface text-secondary hover:bg-bg",
               )}
             >
               {e.dot && <span className={clsx("size-[7px] rounded-full", e.dot)} />}
               {e.label}
-              <span className={clsx("font-mono text-[10px] md:text-[11px]", on ? "text-white" : "text-muted")}>{e.count(counts)}</span>
+              <span className={clsx("font-mono text-[10px] md:text-[11px]", on ? "text-on-dark" : "text-muted")}>{e.count(counts)}</span>
             </button>
           );
         })}
